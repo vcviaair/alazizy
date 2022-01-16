@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 
-@Client.on_message(command(["search", f"search@{BOT_USERNAME}"]))
+@Client.on_message(command(["", f"@{BOT_USERNAME}"]))
 async def ytsearch(_, message: Message):
 
     keyboard = InlineKeyboardMarkup(
@@ -31,7 +31,7 @@ async def ytsearch(_, message: Message):
 
     try:
         if len(message.command) < 2:
-            await message.reply_text("/search **needs an argument !**")
+            await message.reply_text("/ **needs an argument !**")
             return
         query = message.text.split(None, 1)[1]
         m = await message.reply_text("جاري البحث انتظر قليلآ...")

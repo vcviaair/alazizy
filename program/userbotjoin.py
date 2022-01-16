@@ -8,7 +8,7 @@ from pyrogram.errors import UserAlreadyParticipant
 
 
 @Client.on_message(
-    command(["userbotjoin", f"userbotjoin@{BOT_USERNAME}"]) & ~filters.private & ~filters.bot
+    command(["انضم", f"انضم@{BOT_USERNAME}"]) & ~filters.private & ~filters.bot
 )
 @authorized_users_only
 @errors
@@ -34,21 +34,21 @@ async def join_group(client, message):
     except Exception as e:
         print(e)
         await message.reply_text(
-            f"🛑 خطأ. الضغط على البوت كثير🛑 \n\n**لم يتمكن حساب المساعد من الانضمام إلى مجموعتك بسبب كثرة طلبات الانضمام **"
-            "\n\n**أو أضف مساعدًا يدويًا إلى مجموعتك وحاول مرة أخرى**",
+            f"🛑 خطأ. الضغط على البوت كثير🛑 \n\n**لم يتمكن الحساب المساعد من الانضمام إلى مجموعتك بسبب كثرة طلبات الانضمام **"
+            "\n\n**قم بإضافة @{ASSISTANT_NAME} الى مجموعتك يدوياً**",
         )
         return
     await message.reply_text(
-           f"✅ ** دخل حساب المساعد للمجموعه او القناة بنجاح**",
+           f"✅ ** دخل الحساب المساعد للمجموعه بنجاح**",
     )
 
 
-@Client.on_message(command(["userbotleave",
-                            f"leave@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
+@Client.on_message(command(["غادر",
+                            f"غادر@{BOT_USERNAME}"]) & filters.group & ~filters.edited)
 @authorized_users_only
 async def leave_one(client, message):
     try:
-        await USER.send_message(message.chat.id, "✅ userbot successfully left chat")
+        await USER.send_message(message.chat.id, "✅ غادر @{ASSISTANT_NAME} المجموعه بنجاح")
         await USER.leave_chat(message.chat.id)
     except BaseException:
         await message.reply_text(
@@ -58,7 +58,7 @@ async def leave_one(client, message):
         return
 
 
-@Client.on_message(command(["leaveall", f"leaveall@{BOT_USERNAME}"]))
+@Client.on_message(command(["مغادره الكل", f"مغادره الكل@{BOT_USERNAME}"]))
 @sudo_users_only
 async def leave_all(client, message):
     if message.from_user.id not in SUDO_USERS:

@@ -52,36 +52,39 @@ async def _human_time_duration(seconds):
 )
 async def start_(client: Client, message: Message):
     await message.reply_text(
-        f"""✨ **مرحبا عزيزي ↤ {message.from_user.mention()} !**\n
-🤖 **[{BOT_NAME}](https://t.me/{BOT_USERNAME}) **
-** يتيح لك تشغيل الموسيقى والفيديو في مجموعات من خلال المكالمات الجديدة في Telegram! **
-💡 ** اكتشف جميع أوامر البوت وكيفية عملها من خلال النقر على زر »📚 الأوامر! **
-🔖 ** لمعرفة كيفية استخدام هذا البوت ، يرجى النقر فوق » زر دليل الاستخدام! **
+        f"""✨ **مرحبا {message.from_user.mention()} !**\n
+💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **يتيح لك تشغيل الموسيقى والفيديو في مجموعات من خلال محادثات الفيديو الجديدة في Telegram!**
+
+💡 **اكتشف جميع أوامر الروبوت وكيفية عملها من خلال النقر فوق » 📚 زر الأوامر!**
+
+🔖 **لمعرفة كيفية استخدام هذا الروبوت ، الرجاء النقر فوق » ❓ زر الدليل الأساسي!**
+معرف الحساب المساعد
+@{ASSISTANT_NAME}
 """,
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "• اضفني الى مجموعتك •",
+                        "اضغط لـ اضافتي لمجموعتك ➕",
                         url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
                     )
                 ],
-                [InlineKeyboardButton("• طريقة الاستخدام •", callback_data="cbhowtouse")],
+                [InlineKeyboardButton("❓ طريقة التفعيل", callback_data="cbhowtouse")],
                 [
-                    InlineKeyboardButton("• الاوامر •", callback_data="cbbasic"),
-                    InlineKeyboardButton("• المطور •", url=f"https://t.me/{OWNER_NAME}"),
+                    InlineKeyboardButton("📚 الاوامر", callback_data="cbcmds"),
+                    InlineKeyboardButton("❤️ المطور", url=f"https://t.me/{OWNER_NAME}"),
                 ],
                 [
                     InlineKeyboardButton(
-                        "• قروب الدعم •", url=f"https://t.me/{GROUP_SUPPORT}"
+                        "👥 جروب الدعم", url=f"https://t.me/{GROUP_SUPPORT}"
                     ),
                     InlineKeyboardButton(
-                        "𝐬𝐨𝐮𝐫𝐜𝐞 𝐚𝐥𝐚𝐳𝐢𝐳a²¹🐼", url=f"https://t.me/{UPDATES_CHANNEL}"
+                        "📣 قناة البوت", url=f"https://t.me/{UPDATES_CHANNEL}"
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        "دبـدو໑بـٰههہ⁽💕🐾₎⇡", url="https://t.me/BANDA2M"
+                        "𓌹●↯‌•ᴅᴇᴠ ѕʜᴀᴅᴏᴡ•↯●𓌺", url="https://t.me/KB_Shadow"
                     )
                 ],
             ]
@@ -101,9 +104,9 @@ async def alive(client: Client, message: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton("دبـدو໑بـٰههہ⁽💕🐾₎⇡", url=f"https://t.me/BANDA2M"),
+                InlineKeyboardButton("𓌹●↯‌•ᴅᴇᴠ ѕʜᴀᴅᴏᴡ•↯●𓌺", url=f"https://t.me/KB_Shadow"),
                 InlineKeyboardButton(
-                    "𝐬𝐨𝐮𝐫𝐜𝐞 𝐚𝐥𝐚𝐳𝐢𝐳a²¹🐼", url=f"https://t.me/BANDA1M"
+                    "𝑬𝑹𝑹𝑶𝑹🖤", url=f"https://t.me/FA9SH"
                 ),
             ]
         ]
@@ -136,3 +139,27 @@ async def get_uptime(client: Client, message: Message):
         f"• **uptime:** `{uptime}`\n"
         f"• **start time:** `{START_TIME_ISO}`"
     )
+
+
+@Client.on_message(filters.new_chat_members)
+async def new_chat(c: Client, m: Message):
+    ass_uname = (await user.get_me()).username
+    bot_id = (await c.get_me()).id
+    for member in m.new_chat_members:
+        if member.id == bot_id:
+            return await m.reply(
+                "❤️ **شكرا لإضافتي إلى المجموعة !**\n\n"
+                "**قم بترقيتي كمسؤول عن المجموعة ، وإلا فلن أتمكن من العمل بشكل صحيح ، ولا تنسى الكتابة /userbotjoinدعوة المساعد.**\n\n"
+                "**Once done, type** /reload",
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton("👥 جروب الدعم", url=f"https://t.me/{GROUP_SUPPORT}"),
+                            InlineKeyboardButton("📣 قناة البوت", url=f"https://t.me/{UPDATES_CHANNEL}")
+                        ],
+                        [
+                            InlineKeyboardButton("👤 المساعد 👤", url=f"https://t.me/{ass_uname}")
+                        ]
+                    ]
+                )
+            )

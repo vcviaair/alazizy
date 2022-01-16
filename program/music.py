@@ -50,15 +50,22 @@ async def ytdl(link):
         return 0, stderr.decode()
 
 
-@Client.on_message(command(["mplay", f"mplay@{BOT_USERNAME}"]) & other_filters)
+@Client.on_message(command(["play", f"play@{BOT_USERNAME}"]) & other_filters)
 async def play(c: Client, m: Message):
     replied = m.reply_to_message
     chat_id = m.chat.id
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• القائمة", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• إغلاق", callback_data="cls"),
+                InlineKeyboardButton(text="•إغلاق•", callback_data="cls"),
+                InlineKeyboardButton(text="•القائمه•", callback_data="cbmenu"),
+               ],
+               [
+               InlineKeyboardButton("•جروب الدعم•", url=f"https://t.me/{GROUP_SUPPORT}"),
+               InlineKeyboardButton("•قناة البوت•", url=f"https://t.me/{UPDATES_CHANNEL}"),
+              ],
+              [
+              InlineKeyboardButton("•المساعد•", url=f"https://t.me/{ass_uname}"),
             ]
         ]
     )
@@ -100,7 +107,7 @@ async def play(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f"❌ **فشل userbot في الانضمام**\n\n**السبب**: `{e}`")
+                await m.reply_text(f"❌ **فشل @{ASSISTANT_NAME} في الانضمام**\n\n**السبب**: `{e}`")
                 return
         else:
             try:
@@ -111,7 +118,7 @@ async def play(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f"❌ **فشل userbot في الانضمام**\n\n**السبب**: `{e}`"
+                    f"❌ **فشل @{ASSISTANT_NAME} في الانضمام**\n\n**السبب**: `{e}`"
                 )
 
     if replied:
@@ -152,7 +159,7 @@ async def play(c: Client, m: Message):
                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                 await m.reply_photo(
                     photo=f"{IMG_2}",
-                    caption=f"💡 **بداء تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({link})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
+                    caption=f"💡 **بدأ تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({link})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
                     reply_markup=keyboard,
                 )
              except Exception as e:
@@ -161,7 +168,7 @@ async def play(c: Client, m: Message):
         else:
             if len(m.command) < 2:
                 await m.reply(
-                    "» الرد على ** ملف صوتي ** أو ** أكتب شي للبحث**"
+                    "» عليك الرد على ** ملف صوتي ** أو ** أكتب شي للبحث**"
                 )
             else:
                 suhu = await c.send_message(chat_id, "🔎 **Searching...**")
@@ -202,7 +209,7 @@ async def play(c: Client, m: Message):
                                 requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                                 await m.reply_photo(
                                     photo=f"{IMG_2}",
-                                    caption=f"💡 **بداء تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({url})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
+                                    caption=f"💡 **بدأ تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({url})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
                                     reply_markup=keyboard,
                                 )
                             except Exception as ep:
@@ -212,7 +219,7 @@ async def play(c: Client, m: Message):
     else:
         if len(m.command) < 2:
             await m.reply(
-                "» الرد على ** ملف صوتي ** أو ** أكتب شي للبحث**"
+                "» عليك الرد على ** ملف صوتي ** أو ** أكتب شي للبحث**"
             )
         else:
             suhu = await c.send_message(chat_id, "🔎 **جاري البحث...**")
@@ -253,7 +260,7 @@ async def play(c: Client, m: Message):
                             requester = f"[{m.from_user.first_name}](tg://user?id={m.from_user.id})"
                             await m.reply_photo(
                                 photo=f"{IMG_2}",
-                                caption=f"💡 **بداء تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({url})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
+                                caption=f"💡 **بدأ تشغيل الموسيقئ**\n\n🏷 **الاسم:** [{songname}]({url})\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
                                 reply_markup=keyboard,
                             )
                         except Exception as ep:
@@ -270,8 +277,15 @@ async def stream(c: Client, m: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [
-                InlineKeyboardButton(text="• القائمة", callback_data="cbmenu"),
-                InlineKeyboardButton(text="• اغلاق", callback_data="cls"),
+                InlineKeyboardButton(text="•إغلاق•", callback_data="cls"),
+                InlineKeyboardButton(text="•القائمه•", callback_data="cbmenu"),
+               ],
+               [
+               InlineKeyboardButton("•جروب الدعم•", url=f"https://t.me/{GROUP_SUPPORT}"),
+               InlineKeyboardButton("•قناة البوت•", url=f"https://t.me/{UPDATES_CHANNEL}"),
+              ],
+              [
+              InlineKeyboardButton("•المساعد•", url=f"https://t.me/{ass_uname}"),
             ]
         ]
     )
@@ -313,7 +327,7 @@ async def stream(c: Client, m: Message):
             try:
                 await user.join_chat(m.chat.username)
             except Exception as e:
-                await m.reply_text(f"❌ **فشل userbot في الانضمام**\n\n**السبب**: `{e}`")
+                await m.reply_text(f"❌ **فشل @{ASSISTANT_NAME} في الانضمام**\n\n**السبب**: `{e}`")
                 return
         else:
             try:
@@ -324,7 +338,7 @@ async def stream(c: Client, m: Message):
                 pass
             except Exception as e:
                 return await m.reply_text(
-                    f"❌ **فشل userbot في الانضمام**\n\n**السبب**: `{e}`"
+                    f"❌ **فشل @{ASSISTANT_NAME} في الانضمام**\n\n**السبب**: `{e}`"
                 )
 
     if len(m.command) < 2:
@@ -370,7 +384,7 @@ async def stream(c: Client, m: Message):
                     )
                     await m.reply_photo(
                         photo=f"{IMG_2}",
-                        caption=f"💡 **[موسيقئ مباشرة]({link}) بداء التشغيل**\n\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
+                        caption=f"💡 **[موسيقئ مباشرة]({link}) بدأ التشغيل**\n\n💭 **المجموعة:** `{chat_id}`\n💡 **الحالة:** `شغال`\n🎧 **طلب بواسطة:** {requester}",
                         reply_markup=keyboard,
                     )
                 except Exception as ep:

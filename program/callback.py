@@ -13,39 +13,44 @@ from config import (
 )
 
 
-@Client.on_callback_query(filters.regex("cbstart"))
-async def cbstart(_, query: CallbackQuery):
-    await query.edit_message_text(
-        f"""✨ **مرحبآ عزيزي↤「 [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) 」!**\n
-🤖 **[{BOT_NAME}](https://t.me/{BOT_USERNAME}) **
-** يتيح لك تشغيل الموسيقى والفيديو في مجموعات من خلال المكالمات الجديدة في Telegram! **
-💡 ** اكتشف جميع أوامر البوت وكيفية عملها من خلال النقر على زر »📚 الأوامر! **
-🔖 ** لمعرفة كيفية استخدام هذا البوت ، يرجى النقر فوق » زر دليل الاستخدام! **
+@Client.on_message(
+    command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
+)
+async def start_(client: Client, message: Message):
+    await message.reply_text(
+        f"""✨ **مرحبا {message.from_user.mention()} !**\n
+💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **يتيح لك تشغيل الموسيقى والفيديو في مجموعات من خلال محادثات الفيديو الجديدة في Telegram!**
+
+💡 **اكتشف جميع أوامر الروبوت وكيفية عملها من خلال النقر فوق » 📚 زر الأوامر!**
+
+🔖 **لمعرفة كيفية استخدام هذا الروبوت ، الرجاء النقر فوق » ❓ زر الدليل الأساسي!**
+معرف الحساب المساعد
+@{ASSISTANT_NAME}
 """,
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "• اضفني الئ مجموعتك •",
+                        "اضغط لـ اضافتي لمجموعتك ➕",
                         url=f"https://t.me/{BOT_USERNAME}?startgroup=true",
                     )
                 ],
-                [InlineKeyboardButton("• طريقة الاستخدام •", callback_data="cbhowtouse")],
+                [InlineKeyboardButton("❓ طريقة التفعيل", callback_data="cbhowtouse")],
                 [
-                    InlineKeyboardButton("• الاوامر •", callback_data="cbbasic"),
-                    InlineKeyboardButton("• المطور •", url=f"https://t.me/{OWNER_NAME}"),
+                    InlineKeyboardButton("📚 الاوامر", callback_data="cbcmds"),
+                    InlineKeyboardButton("❤️ المطور", url=f"https://t.me/{OWNER_NAME}"),
                 ],
                 [
                     InlineKeyboardButton(
-                        "• جروب الدعم •", url=f"https://t.me/{GROUP_SUPPORT}"
+                        "👥 جروب الدعم", url=f"https://t.me/{GROUP_SUPPORT}"
                     ),
                     InlineKeyboardButton(
-                        "𝐬𝐨𝐮𝐫𝐜𝐞 𝐚𝐥𝐚𝐳𝐢𝐳a²¹🐼", url=f"https://t.me/BANDA1M"
+                        "📣 قناة البوت", url=f"https://t.me/{UPDATES_CHANNEL}"
                     ),
                 ],
                 [
                     InlineKeyboardButton(
-                        "دبـدو໑بـٰههہ⁽💕🐾₎⇡", url="https://t.me/BANDA2M"
+                        "𓌹●↯‌•ᴅᴇᴠ ѕʜᴀᴅᴏᴡ•↯●𓌺", url="https://t.me/KB_Shadow"
                     )
                 ],
             ]
@@ -62,14 +67,14 @@ async def cbguides(_, query: CallbackQuery):
  1 ↤ أولاً ، أضفني إلى مجموعتك
  2 ↤ بعد ذلك ، قم بترقيتي كمشرف ومنح جميع الصلاحيات باستثناء الوضع الخفي
  3 ↤ بعد ترقيتي ، اكتب /reload مجموعة لتحديث بيانات المشرفين
- 3 ↤ أضف @{ASSISTANT_NAME} إلى مجموعتك أو اكتب /userbotjoin لدعوة حساب المساعد
+ 3 ↤ أضف @{ASSISTANT_NAME} إلى مجموعتك أو اكتب /انضم لدعوة حساب المساعد
  4 ↤ قم بتشغيل المكالمة  أولاً قبل البدء في تشغيل الفيديو / الموسيقى
  5 ↤ في بعض الأحيان ، يمكن أن تساعدك إعادة تحميل البوت باستخدام الأمر /reload في إصلاح بعض المشكلات
- 📌 إذا لم ينضم البوت إلى المكالمة ، فتأكد من تشغيل المكالمة  بالفعل ، أو اكتب /userbotleave ثم اكتب /userbotjoin مرة أخرى
+ 📌 إذا لم ينضم البوت إلى المكالمة ، فتأكدفتأكد من تشغيل المكالمة  بالفعل ، أو اكتب /غادر ثم اكتب /انضم مرة أخرى
 
  💡 إذا كانت لديك أسئلة  حول هذا البوت ، فيمكنك إخبارنا منن خلال قروب الدعم الخاصة بي هنا ↤ @{GROUP_SUPPORT}
 
- ⚡ ادارة سورس العزايزي @BANDA1M
+⚡ قناة البوت @{UPDATES_CHANNEL}
 __""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 رجوع", callback_data="cbstart")]]
@@ -80,20 +85,19 @@ __""",
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbcmds(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""✨ **Hello [{query.message.chat.first_name}](tg://user?id={query.message.chat.id}) !**
+        f"""» **قم بالضغط علي الزر الذي تريده لمعرفه الاوامر لكل فئه منهم !
+**
 
-» **press the button below to read the explanation and see the list of available commands !**
-
-⚡ __Powered by {BOT_NAME} A.I__""",
+⚡ قناة البوت @{UPDATES_CHANNEL
         reply_markup=InlineKeyboardMarkup(
             [
                 [
-                    InlineKeyboardButton("👷🏻 Admin Cmd", callback_data="cbadmin"),
-                    InlineKeyboardButton("🧙🏻 Sudo Cmd", callback_data="cbsudo"),
+                    InlineKeyboardButton("👷🏻 اوامر الادمنيه", callback_data="cbadmin"),
+                    InlineKeyboardButton("🧙🏻 اوامر المطور", callback_data="cbsudo"),
                 ],[
-                    InlineKeyboardButton("📚 Basic Cmd", callback_data="cbbasic")
+                    InlineKeyboardButton("📚 اوامر اساسيه", callback_data="cbbasic")
                 ],[
-                    InlineKeyboardButton("🔙 Go Back", callback_data="cbstart")
+                    InlineKeyboardButton("🔙 رجوع", callback_data="cbstart")
                 ],
             ]
         ),
@@ -103,21 +107,22 @@ async def cbcmds(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbbasic"))
 async def cbbasic(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 ها هي الأوامر الأساسية:
- » /mplay 「اسم الأغنية / رابط」تشغيل الصوت mp3
- » /vplay 「اسم / رابط الفيديو」 تشغيل الفيديو داخل المكالمة 
-» /stream 「رابط 」تشغيل صوت
- » /vstream 「رابط」 تشغيل فيديو مباشر من اليوتيوب
-» /stop لايقاف التشغيل
-» /resume استئناف التشغيل
-» /skip تخطي الئ التالي
-» /pause ايقاف التشغيل موقتآ
-» /vmute لكتم البوت
-» /vunmute لرفع الكتم عن البوت
- ⚡ ادارة سورس العزايزي @php_7
+        f"""🏮 مرحبا بك في الاوامر الاساسيه:
+» /play +「اسم الأغنية / رابط」لتشغيل اغنيه في المحادثه الصوتيه
+» /vplay +「اسم الفيديو / رابط 」 لتشغيل الفيديو داخل المكالمة
+» /vstream 「رابط」 تشغيل فيديو مباشر من اليوتيوب
+» /playlist 「تظهر لك قائمة التشغيل」
+» /end「لإنهاء الموسيقى / الفيديو في الكول」
+» /song + 「الاسم تنزيل صوت من youtube」
+»/vsong + 「الاسم  تنزيل فيديو من youtube」
+» /skip「للتخطي إلى التالي」
+» /ping 「إظهار حالة البوت بينغ」
+» /uptime 「لعرض مده التشغيل للبوت」
+» /alive「اظهار معلومات البوت(في المجموعه)」
+⚡ قناة البوت @{UPDATES_CHANNEL}
 __""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 الـتـالـي", callback_data="cbadmin")]]
+            [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
         ),
     )
 
@@ -125,38 +130,39 @@ __""",
 @Client.on_callback_query(filters.regex("cbadmin"))
 async def cbadmin(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""  » /playlist ↤ تظهر لك قائمة التشغيل
- » /video + الاسم  تنزيل فيديو من youtube
- » /song + الاسم تنزيل صوت من youtube
-» /volume + الرقم لضبط مستوئ الصوت
-» /reload لتحديث البوت و قائمة المشرفين
-» /userbotjoin لاستدعاء حساب المساعد
-» /userbotleave لطرد حساب المساعد 
- » /ping - إظهار حالة البوت بينغ
- » /alive  إظهار معلومات البوت  (في المجموعة)
-  ⚡ ادارة سورس العزايزي @php_7
+        f"""🏮 اوامر الادمنيه:
+» /pause 「ايقاف التشغيل موقتآ」
+» /resume 「استئناف التشغيل」
+» /stop「لإيقاف التشغيل」
+» /vmute 「لكتم البوت」
+» /vunmute 「لرفع الكتم عن البوت」
+» /volume 「ضبط مستوئ الصوت」
+» /reload「لتحديث البوت و قائمة المشرفين」
+» /userbotjoin「لاستدعاء الحساب المساعد」
+» /userbotleave「لطرد الحساب المساعد」
+⚡ قناة البوت @{UPDATES_CHANNEL}
 __""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 رجوع", callback_data="cbstart")]]
+            [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
         ),
     )
 
 @Client.on_callback_query(filters.regex("cbsudo"))
 async def cbsudo(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 here is the sudo commands:
+        f"""🏮 مرحبا بك في اوامر المطور:
 
-» /rmw - clean all raw files
-» /rmd - clean all downloaded files
-» /sysinfo - show the system information
-» /update - update your bot to latest version
-» /restart - restart your bot
-» /leaveall - order userbot to leave from all group
+» /rmw「لحذف جميع الملفات 」
+» /rmd「حذف جميع الملفات المحمله」
+» /sysinfo「لمعرفه معلومات السيرفر」
+» /update「لتحديث بوتك لاخر نسخه」
+» /restart「اعاده تشغيل البوت」
+» /leaveall「خروج وج الحساب المساعد من جميع المجموعات」
 
- ⚡ ادارة سورس العزايزي @php_7
+⚡ قناة البوت @{UPDATES_CHANNEL}
 """,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 Go Back", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
         ),
     )
 
