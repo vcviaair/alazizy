@@ -9,7 +9,7 @@
         "pyrogram"
     ],
     "website": "https://t.me/BANDA1M",
-    "repository": "https://github.com/mostafaaziza/alazizy",
+    "repository": "https://github.com/vcviaair/alazizy",
     "success_url": "https://t.me/hama_refaat",
     "env": {
         "API_ID": {
