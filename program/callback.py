@@ -13,11 +13,9 @@ from config import (
 )
 
 
-@Client.on_message(
-    command(["start", f"start@{BOT_USERNAME}"]) & filters.private & ~filters.edited
-)
-async def start_(client: Client, message: Message):
-    await message.reply_text(
+@Client.on_callback_query(filters.regex("cbstart"))
+async def cbstart(_, query: CallbackQuery):
+    await query.edit_message_text(
         f"""✨ **مرحبا {message.from_user.mention()} !**\n
 💭 [{BOT_NAME}](https://t.me/{BOT_USERNAME}) **يتيح لك تشغيل الموسيقى والفيديو في مجموعات من خلال محادثات الفيديو الجديدة في Telegram!**
 
