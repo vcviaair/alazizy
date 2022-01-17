@@ -1,4 +1,4 @@
-# Copyright (C) 2021 By AmortMusicProject
+# Copyright (C) 2021 By VeezMusicProject
 
 from driver.queues import QUEUE
 from pyrogram import Client, filters
@@ -62,7 +62,7 @@ async def start_(client: Client, message: Message):
 @Client.on_callback_query(filters.regex("cbhowtouse"))
 async def cbguides(_, query: CallbackQuery):
     await query.edit_message_text(
-        f""" الدليل الأساسي لاستخدام هذا البوت:
+        f"""❓ **الدليل الأساسي لأستخدام هذا الروبوت:**
 
  1 ↤ أولاً ، أضفني إلى مجموعتك
  2 ↤ بعد ذلك ، قم بترقيتي كمشرف ومنح جميع الصلاحيات باستثناء الوضع الخفي
@@ -85,10 +85,9 @@ __""",
 @Client.on_callback_query(filters.regex("cbcmds"))
 async def cbcmds(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""» **قم بالضغط علي الزر الذي تريده لمعرفه الاوامر لكل فئه منهم !
-**
+        f"""» **قم بالضغط علي الزر الذي تريده لمعرفه الاوامر لكل فئه منهم !**
 
-⚡ قناة البوت @{UPDATES_CHANNEL
+⚡ قناة البوت @{UPDATES_CHANNEL}""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -107,7 +106,8 @@ async def cbcmds(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbbasic"))
 async def cbbasic(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 مرحبا بك في الاوامر الاساسيه:
+        f"""🏮 قائمة الأوامر الأساسيه:
+
 » /play +「اسم الأغنية / رابط」لتشغيل اغنيه في المحادثه الصوتيه
 » /vplay +「اسم الفيديو / رابط 」 لتشغيل الفيديو داخل المكالمة
 » /vstream 「رابط」 تشغيل فيديو مباشر من اليوتيوب
@@ -119,10 +119,9 @@ async def cbbasic(_, query: CallbackQuery):
 » /ping 「إظهار حالة البوت بينغ」
 » /uptime 「لعرض مده التشغيل للبوت」
 » /alive「اظهار معلومات البوت(في المجموعه)」
-⚡ قناة البوت @{UPDATES_CHANNEL}
-__""",
+⚡ قناة البوت @{UPDATES_CHANNEL} AI__""",
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
+            [[InlineKeyboardButton("🔙 الرجوع", callback_data="cbcmds")]]
         ),
     )
 
@@ -130,7 +129,8 @@ __""",
 @Client.on_callback_query(filters.regex("cbadmin"))
 async def cbadmin(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 اوامر الادمنيه:
+        f"""🏮 هنا أوامر الادمنيه:
+
 » /pause 「ايقاف التشغيل موقتآ」
 » /resume 「استئناف التشغيل」
 » /stop「لإيقاف التشغيل」
@@ -140,8 +140,7 @@ async def cbadmin(_, query: CallbackQuery):
 » /reload「لتحديث البوت و قائمة المشرفين」
 » /userbotjoin「لاستدعاء الحساب المساعد」
 » /userbotleave「لطرد الحساب المساعد」
-⚡ قناة البوت @{UPDATES_CHANNEL}
-__""",
+⚡ قناة البوت @{UPDATES_CHANNEL} AI__""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
         ),
@@ -150,7 +149,7 @@ __""",
 @Client.on_callback_query(filters.regex("cbsudo"))
 async def cbsudo(_, query: CallbackQuery):
     await query.edit_message_text(
-        f"""🏮 مرحبا بك في اوامر المطور:
+        f"""🏮 هنا اوامر المطور:
 
 » /rmw「لحذف جميع الملفات 」
 » /rmd「حذف جميع الملفات المحمله」
@@ -159,8 +158,7 @@ async def cbsudo(_, query: CallbackQuery):
 » /restart「اعاده تشغيل البوت」
 » /leaveall「خروج وج الحساب المساعد من جميع المجموعات」
 
-⚡ قناة البوت @{UPDATES_CHANNEL}
-""",
+⚡ قناة البوت @{UPDATES_CHANNEL} AI__""",
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton("🔙 رجوع", callback_data="cbcmds")]]
         ),
@@ -170,7 +168,7 @@ async def cbsudo(_, query: CallbackQuery):
 @Client.on_callback_query(filters.regex("cbmenu"))
 async def cbmenu(_, query: CallbackQuery):
     if query.message.sender_chat:
-        return await query.answer("you're an Anonymous Admin !\n\n» revert back to user account from admin rights.")
+        return await query.answer("أنت مسؤول مجهول !\n\n» العودة إلى حساب المستخدم من حقوق المسؤول.")
     a = await _.get_chat_member(query.message.chat.id, query.from_user.id)
     if not a.can_manage_voice_chats:
         return await query.answer("💡 المسؤول الوحيد الذي لديه إذن إدارة الدردشات الصوتية يمكنه النقر على هذا الزر !", show_alert=True)
@@ -187,7 +185,7 @@ async def cbmenu(_, query: CallbackQuery):
                       InlineKeyboardButton("🔇", callback_data="cbmute"),
                       InlineKeyboardButton("🔊", callback_data="cbunmute"),
                   ],[
-                      InlineKeyboardButton("🗑 اغلاق", callback_data="cls")],
+                      InlineKeyboardButton("🗑 حذف", callback_data="cls")],
                   ]
              ),
          )
